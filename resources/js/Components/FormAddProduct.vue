@@ -1,6 +1,6 @@
 <template>
     <TransitionGroup name="form">
-        <form @submit.prevent="submitHandler" v-if="show">
+        <form @submit.prevent="submitHandler" v-if="show" enctype="multipart/form-data">
             <div><h2 class="text-center">Add product</h2></div>
             <v-text-field
                 class="mt-3"
@@ -15,14 +15,29 @@
                 :error-messages="v$.price.$errors.map(e => e.$message)"
                 v-model.number="state.price"
             ></v-text-field>
+            <v-autocomplete
+                class="mt-3"
+                label="Наличие товара"
+                :error-messages="v$.availability.$errors.map(e => e.$message)"
+                v-model="state.availability"
+                :items="['В наличии', 'Нет в наличии']"
+            >
+            </v-autocomplete><v-autocomplete
+                class="mt-3"
+                label="Доставка"
+                :error-messages="v$.delivery.$errors.map(e => e.$message)"
+                v-model="state.delivery"
+                :items="['Новая почта', 'Укрпочта', 'Meest']"
+            ></v-autocomplete>
             <v-file-input
                 class="mt-3"
                 label="Изображение товара"
                 :error-messages="v$.image.$errors.map(e => e.$message)"
-                v-model="state.image"
+                @change="uploadImage"
             >
             </v-file-input>
-            <div>
+            <div class="mt-3">
+                <span>Описание товара</span>
                 <ckeditor
                     :editor="editor"
                     v-model="state.content"
@@ -71,6 +86,7 @@ import {required, minLength, maxLength, sameAs} from "@vuelidate/validators";
 import useVuelidate from "@vuelidate/core";
 import {computed, reactive} from "vue";
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+import ApiStore from '@/Api/index.vue';
 
 export default {
     props: {
@@ -87,6 +103,8 @@ export default {
         const state = reactive({
             title: null,
             price: null,
+            availability: null,
+            delivery: null,
             image: null,
             content: '',
             captcha: null
@@ -100,6 +118,8 @@ export default {
             return {
                 title: {required, minLength: minLength(10), maxLength: maxLength(100)},
                 price: {required, minLength: minLength(1), maxLength: maxLength(10)},
+                availability: {required},
+                delivery: {required},
                 image: {required},
                 content: {required, minLength: minLength(20), maxLength: maxLength(1000)},
                 captcha: {required, sameAs: sameAs(random.randomString)}
@@ -120,14 +140,25 @@ export default {
             editor: ClassicEditor,
             editorConfig: {
                 toolbar: ['undo', 'redo', '|', 'bold', 'italic', 'link']
-            }
+            },
         };
     },
     methods: {
+        uploadImage(e){
+            this.state.image = e.target.files[0];
+        },
         async submitHandler() {
             const result = await this.v$.$validate();
+            const formdata = new FormData();
+            formdata.append("title", this.state.title);
+            formdata.append("price", this.state.price);
+            formdata.append("availability", this.state.availability);
+            formdata.append("delivery", this.state.delivery);
+            formdata.append("image", this.state.image);
+            formdata.append("content", this.state.content);
             if (result) {
-                console.log(this.state);
+                console.log(this.state)
+                ApiStore.methods.fetchProduct(formdata);
             }
         }
     }
@@ -136,9 +167,6 @@ export default {
 </script>
 
 <style>
-.ck-editor {
-    margin-top: 15px !important;
-}
 .ck-balloon-panel .ck-powered-by a {
     display: none !important;
 }
