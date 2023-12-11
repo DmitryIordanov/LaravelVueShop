@@ -15,7 +15,7 @@
 
         <!-- Scripts -->
         @routes
-        @vite(['resources/js/app.js', "resources/js/App.vue"])
+        @vite(['resources/js/app.js', "resources/js/{$page['component']}.vue"])
         @inertiaHead
     </head>
     <body class="font-sans antialiased">

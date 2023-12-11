@@ -1,6 +1,6 @@
 <template>
     <TransitionGroup name="form">
-        <form @submit.prevent="submitHandler" v-if="show" enctype="multipart/form-data">
+        <form class="formAddProduct" ref="formAddProduct" @submit.prevent="submitHandler" v-if="show" enctype="multipart/form-data">
             <div><h2 class="text-center">Add product</h2></div>
             <v-text-field
                 class="mt-3"
@@ -22,7 +22,8 @@
                 v-model="state.availability"
                 :items="['В наличии', 'Нет в наличии']"
             >
-            </v-autocomplete><v-autocomplete
+            </v-autocomplete>
+            <v-autocomplete
                 class="mt-3"
                 label="Доставка"
                 :error-messages="v$.delivery.$errors.map(e => e.$message)"
@@ -150,6 +151,7 @@ export default {
         async submitHandler() {
             const result = await this.v$.$validate();
             const formdata = new FormData();
+
             formdata.append("title", this.state.title);
             formdata.append("price", this.state.price);
             formdata.append("availability", this.state.availability);
@@ -157,18 +159,22 @@ export default {
             formdata.append("image", this.state.image);
             formdata.append("content", this.state.content);
             if (result) {
-                console.log(this.state)
-                ApiStore.methods.fetchProduct(formdata);
+                ApiStore.methods.handleProduct(formdata);
+                this.$refs.formAddProduct.reset();
             }
         }
     }
 }
 
 </script>
-
 <style>
 .ck-balloon-panel .ck-powered-by a {
     display: none !important;
+}
+.formAddProduct{
+    max-width: 750px;
+    margin-left: auto;
+    margin-right: auto;
 }
 .form-move,
 .form-enter-active,

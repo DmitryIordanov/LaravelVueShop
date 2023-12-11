@@ -3,7 +3,7 @@
         <v-app-bar color="grey-darken-3" :elevation="2" scroll-behavior="collapse">
             <v-app-bar-title>Shop</v-app-bar-title>
             <v-spacer></v-spacer>
-            <v-btn>Product</v-btn>
+            <v-btn @click="$router.push(`/`)">Product</v-btn>
         </v-app-bar>
         <v-container>
             <div class="App">
@@ -25,7 +25,7 @@ export default {
     flex-direction: column;
     margin-left: auto;
     margin-right: auto;
-    max-width: 750px;
+    max-width: 1500px;
 }
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {

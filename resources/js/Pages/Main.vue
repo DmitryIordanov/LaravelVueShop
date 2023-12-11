@@ -4,13 +4,16 @@
             <v-btn variant="outlined" @click="showForm">Add Product</v-btn>
         </div>
         <form-add-product v-model:show="show"/>
+        <product-list/>
     </div>
 </template>
 
 <script>
 import FormAddProduct from "@/Components/FormAddProduct.vue";
+import ProductList from "@/Components/ProductList.vue";
 export default {
     components:{
+        ProductList,
         FormAddProduct
     },
     data(){

@@ -6,19 +6,17 @@ use App\Http\Requests\ProductRequest;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Inertia\Inertia;
 
 class ProductController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Display a listing of the product.
      */
     public function index() {
         try {
-            $product = Product::all();
+            return Product::all();
 
-            return response()->json([
-                'Product' => $product
-            ]);
         } catch (\Exception $error) {
 
             return response()->json([
@@ -28,7 +26,7 @@ class ProductController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Creating a new product and upload image.
      */
     public function create(ProductRequest $request) {
         try {
@@ -36,9 +34,23 @@ class ProductController extends Controller
             $data['image'] = Storage::put('/images', $data['image']);
             $product = Product::create($data);
 
+            return $product;
+        } catch (\Exception $error) {
+
             return response()->json([
-                'Product' => $product
-            ]);
+                'massage' => $error
+            ], 500);
+        }
+    }
+
+    /**
+     * Display the specified product.
+     */
+    public function show($id) {
+        try {
+            $product = Product::find($id);
+
+            return $product;
         } catch (\Exception $error) {
 
             return response()->json([
