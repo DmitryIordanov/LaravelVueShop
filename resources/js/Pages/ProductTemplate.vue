@@ -30,6 +30,25 @@
                 <p class="text-h6" v-html="product.content">
                 </p>
             </div>
+
+            <v-card-item>
+                <v-btn class="mr-3" color="light-blue-darken-1">
+                    <v-icon
+                        start
+                        icon="mdi-pencil"
+                    >
+                    </v-icon>
+                    Update
+                </v-btn>
+                <v-btn color="red">
+                    <v-icon
+                        start
+                        icon="mdi-minus-circle"
+                    >
+                    </v-icon>
+                    Delete
+                </v-btn>
+            </v-card-item>
         </div>
     </div>
     <v-progress-circular

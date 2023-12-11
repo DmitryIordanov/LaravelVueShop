@@ -15,7 +15,7 @@ class ProductController extends Controller
      */
     public function index() {
         try {
-            return Product::all();
+            return Product::paginate(9);
 
         } catch (\Exception $error) {
 
