@@ -91,16 +91,19 @@ import ApiStore from '@/Api/index.vue';
 
 export default {
     props: {
+        // Props for hiding the form
         show: {
             type: Boolean,
             default: false
-        }
+        },
     },
     setup() {
+        // Variable with a randomly generated value for captcha
         const random = reactive({
             randomString: Math.random().toString(36).slice(8)
         });
 
+        // Form value interceptors
         const state = reactive({
             title: null,
             price: null,
@@ -111,10 +114,12 @@ export default {
             captcha: null
         });
 
+        // Function to update the string when the captcha button is clicked
         const refreshString = () => {
             random.randomString = Math.random().toString(36).slice(8);
         }
 
+        // Form validation via Vuelidate
         const rules = computed(() => {
             return {
                 title: {required, minLength: minLength(10), maxLength: maxLength(100)},
@@ -127,8 +132,10 @@ export default {
             }
         });
 
+        // Variable v$ for useVuelidate values
         const v$ = useVuelidate(rules, state);
 
+        // Returning all the features you need
         return {
             random,
             refreshString,
@@ -138,18 +145,24 @@ export default {
     },
     data() {
         return {
+            // Ckeditor value ClassicEditor
             editor: ClassicEditor,
+            // Ckeditor config for toolbar
             editorConfig: {
                 toolbar: ['undo', 'redo', '|', 'bold', 'italic', 'link']
             },
         };
     },
     methods: {
+        // UploadImage function to get the uploaded file
         uploadImage(e){
             this.state.image = e.target.files[0];
         },
+        // SubmitHandler function for validating the result from the form
         async submitHandler() {
+            // result variable to get a Boolean value from the form
             const result = await this.v$.$validate();
+            // formdata to get values from the form
             const formdata = new FormData();
 
             formdata.append("title", this.state.title);
@@ -158,8 +171,12 @@ export default {
             formdata.append("delivery", this.state.delivery);
             formdata.append("image", this.state.image);
             formdata.append("content", this.state.content);
+
+            // Checking the value of the result variable
             if (result) {
-                ApiStore.methods.handleProduct(formdata);
+                // Send data to axios request to be sent to server
+                await ApiStore.methods.handleProduct(formdata);
+                // Reset form
                 this.$refs.formAddProduct.reset();
             }
         }

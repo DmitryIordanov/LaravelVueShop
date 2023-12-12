@@ -14,8 +14,6 @@ class Product extends Model
     use SoftDeletes;
     use Filterable;
 
-    protected $guarded = false;
-
     protected $fillable = [
         'title',
         'price',

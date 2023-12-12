@@ -28,12 +28,16 @@ export default {
     },
     data() {
         return {
+            // Props for hiding the form
             show: false,
+            // Filtering options in select form
             itemSelect: ['Default', 'Cheap', 'Expensive', 'Newest', 'Alphabetically'],
+            // The selected option in select by the user falls into the itemsValue
             itemsValue: null
         }
     },
     methods: {
+        // Function to display the form
         showForm() {
             if (this.show === false) {
                 this.show = true;

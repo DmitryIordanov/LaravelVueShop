@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\ProfileController;
 use Illuminate\Foundation\Application;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -16,6 +18,6 @@ use Inertia\Inertia;
 |
 */
 
-Route::get('/{any}', function () {
+Route::any('/{all}', function () {
     return Inertia::render('App');
-})->where("any", ".*");
+})->where("all", "^(?!storage).*$");

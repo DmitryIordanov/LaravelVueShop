@@ -19,7 +19,7 @@
                     </v-card-subtitle>
                 </v-card-item>
                 <v-card-text class="text-h5">
-                    {{ items.price - 300 }} ₴
+                    {{ items.price - 100 }} ₴
                 </v-card-text>
             </v-card>
         </a>
@@ -48,23 +48,35 @@ import axios from "axios";
 
 export default {
     props: {
+        // Props filters to get value with select filter from Main.vue
         filters: {
             type: String
         }
     },
     data() {
         return {
+            // Product array which contains data from the server
             product: [],
+            // Loading icon
             isLoadingProduct: false,
+            // Page variable contains the current page
             page: 1,
+            // pageCount receives links from data transferred from laravel
             pageCount: []
         }
     },
     methods: {
+        // fetchProduct function for retrieving data and implementing filtering from the server
+        // Function for page pagination and filtering
+        // The function takes the page number = pages and the selected filter = filter
         async fetchProduct(pages, filter = 'Default') {
             try {
+                // isLoadingProduct set to true which means that it will be visible
                 this.isLoadingProduct = true;
+                // In this.page we pass pages
+                this.page = pages;
 
+                // Axios request
                 await axios.get('http://localhost:8000/api/product?page=' + pages + '&filter=' + filter)
                     .then((data) => {
                             this.product = data.data;
@@ -74,18 +86,22 @@ export default {
             } catch (error) {
                 console.log(error);
             } finally {
+                // isLoadingProduct set to false
                 this.isLoadingProduct = false;
             }
         }
     },
     mounted() {
-        this.fetchProduct(this.page, this.filters);
+        // Call the function when the page loads
+        this.fetchProduct(1, this.filters);
     },
     watch: {
         filters: {
+            // Update the value in fetchProduct after user actions
             handler(value) {
                 this.fetchProduct(this.page, value);
             },
+            // Monitor every change in value
             deep: true
         }
     }

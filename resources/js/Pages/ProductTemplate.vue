@@ -7,12 +7,11 @@
         ></v-img>
 
         <div class="Product__Block_Desc">
-            <v-card-title class="text-h3">
-                {{ product.title }}
-            </v-card-title>
+
+            <h1 style="padding: 0.5rem 1rem;">{{ product.title }}</h1>
 
             <v-card-title class="mt-4 text-h4">
-                {{ product.price - 300 }} ₴ <s class="text-h5" style="color: red; opacity: .5;">{{ product.price }} ₴</s>
+                {{ product.price - 100 }} ₴ <s class="text-h5" style="color: red; opacity: .5;">{{ product.price }} ₴</s>
             </v-card-title>
 
             <v-card-item class="mt-4">
@@ -32,7 +31,7 @@
             </div>
 
             <v-card-item>
-                <v-btn class="mr-3" color="light-blue-darken-1">
+                <v-btn class="mr-3" color="light-blue-darken-1" :to="'/update/' + product.id">
                     <v-icon
                         start
                         icon="mdi-pencil"
@@ -66,23 +65,31 @@ import ApiStore from "@/Api/index.vue";
 export default {
     data() {
         return {
+            // The selected post is sent to the court for further output to the template
             product: Object,
+            // Loading icon for productTemplate
             isLoadingProduct: false
         }
     },
     methods: {
+        // Axios to get the desired post by id
         async idFindProduct() {
             try {
+                // Loading set to true
                 this.isLoadingProduct = true
+                // Send the identifier to the Axios request to send it to the server and receive the desired post
                 this.product = await ApiStore.methods.findProduct(this.$route.params.id);
             } catch (error){
                 console.log(error)
             } finally {
+                // Loading set to false
                 this.isLoadingProduct = false;
             }
         },
+        // The delete Product function sends a request to delete a product
         async deleteProduct() {
             try {
+                // Send the id to an Axios request to delete the desired post by id
                 await ApiStore.methods.deleteProduct(this.product.id);
             } catch (error) {
                 console.log(error)
@@ -90,6 +97,7 @@ export default {
         }
     },
     mounted() {
+        // Call the function when the page loads
         this.idFindProduct();
     }
 }
@@ -98,7 +106,7 @@ export default {
 <style>
 .Product__Block {
     display: flex;
-    align-items: center;
+    align-items: start;
 }
 
 .Product__Block_Desc {
@@ -106,5 +114,8 @@ export default {
     flex-direction: column;
     width: 600px;
     margin-left: 50px;
+}
+.Product__Block_Desc li {
+    list-style-type: none;
 }
 </style>

@@ -65,6 +65,23 @@ class ProductController extends Controller
     }
 
     /**
+     * Update the specified resource in storage.
+     */
+    public function update(ProductRequest $request, $id){
+        try {
+            $product = Product::find($id);
+            $product->update($request->all());
+
+            return $product;
+        } catch (\Exception $error) {
+
+            return response()->json([
+                'massage' => $error
+            ], 500);
+        }
+    }
+
+    /**
      * Delete the specified product.
      */
     public function delete($id) {

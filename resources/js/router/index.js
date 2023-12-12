@@ -1,6 +1,7 @@
 import {createRouter, createWebHistory} from "vue-router";
 import Main from "@/Pages/Main.vue";
 import ProductTemplate from "@/Pages/ProductTemplate.vue";
+import UpdateProduct from "@/Pages/UpdateProduct.vue";
 
 const routes = [
     {
@@ -10,6 +11,10 @@ const routes = [
     {
         path: '/product/:id',
         component: ProductTemplate
+    },
+    {
+        path: '/update/:id',
+        component: UpdateProduct
     },
 ]
 
