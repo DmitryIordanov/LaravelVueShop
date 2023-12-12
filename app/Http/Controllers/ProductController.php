@@ -2,20 +2,26 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Filters\ProductFilter;
+use App\Http\Requests\FilterRequest;
 use App\Http\Requests\ProductRequest;
 use App\Models\Product;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
-use Inertia\Inertia;
 
 class ProductController extends Controller
 {
     /**
      * Display a listing of the product.
      */
-    public function index() {
+    public function index(FilterRequest $request) {
         try {
-            return Product::paginate(9);
+            $data = $request->validated();
+
+            $filter = app()->make(ProductFilter::class, ['queryParams' => $data]);
+
+            $product = Product::filter($filter)->paginate(9);
+
+            return $product;
 
         } catch (\Exception $error) {
 
@@ -48,9 +54,23 @@ class ProductController extends Controller
      */
     public function show($id) {
         try {
-            $product = Product::find($id);
+            return Product::find($id);
 
-            return $product;
+        } catch (\Exception $error) {
+
+            return response()->json([
+                'massage' => $error
+            ], 500);
+        }
+    }
+
+    /**
+     * Delete the specified product.
+     */
+    public function delete($id) {
+        try {
+            return Product::find($id)->delete();
+
         } catch (\Exception $error) {
 
             return response()->json([

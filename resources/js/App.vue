@@ -1,7 +1,7 @@
 <template>
     <v-app>
         <v-app-bar color="grey-darken-3" :elevation="2" scroll-behavior="collapse">
-            <v-app-bar-title>Shop</v-app-bar-title>
+            <v-app-bar-title>© Dmitry Iordanov</v-app-bar-title>
             <v-spacer></v-spacer>
             <v-btn @click="$router.push(`/`)">Product</v-btn>
         </v-app-bar>

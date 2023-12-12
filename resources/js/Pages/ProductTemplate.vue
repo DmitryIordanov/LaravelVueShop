@@ -40,7 +40,7 @@
                     </v-icon>
                     Update
                 </v-btn>
-                <v-btn color="red">
+                <v-btn color="red" @click="deleteProduct" to="/">
                     <v-icon
                         start
                         icon="mdi-minus-circle"
@@ -79,6 +79,13 @@ export default {
                 console.log(error)
             } finally {
                 this.isLoadingProduct = false;
+            }
+        },
+        async deleteProduct() {
+            try {
+                await ApiStore.methods.deleteProduct(this.product.id);
+            } catch (error) {
+                console.log(error)
             }
         }
     },

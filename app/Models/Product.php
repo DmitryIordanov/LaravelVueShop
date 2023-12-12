@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Traits\Filterable;
 use DateTimeInterface;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -11,6 +12,9 @@ class Product extends Model
 {
     use HasFactory;
     use SoftDeletes;
+    use Filterable;
+
+    protected $guarded = false;
 
     protected $fillable = [
         'title',

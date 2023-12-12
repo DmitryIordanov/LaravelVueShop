@@ -47,24 +47,25 @@
 import axios from "axios";
 
 export default {
+    props: {
+        filters: {
+            type: String
+        }
+    },
     data() {
         return {
             product: [],
             isLoadingProduct: false,
             page: 1,
-            pageCount: [],
+            pageCount: []
         }
     },
-    mounted() {
-        this.fetchProduct();
-    },
     methods: {
-        async fetchProduct(pages = 1) {
+        async fetchProduct(pages, filter = 'Default') {
             try {
                 this.isLoadingProduct = true;
-                this.page = pages;
 
-                const responce = await axios.get('http://localhost:8000/api/product?page=' + pages)
+                await axios.get('http://localhost:8000/api/product?page=' + pages + '&filter=' + filter)
                     .then((data) => {
                             this.product = data.data;
                             this.pageCount = data.data.links;
@@ -77,6 +78,17 @@ export default {
             }
         }
     },
+    mounted() {
+        this.fetchProduct(this.page, this.filters);
+    },
+    watch: {
+        filters: {
+            handler(value) {
+                this.fetchProduct(this.page, value);
+            },
+            deep: true
+        }
+    }
 }
 </script>
 
