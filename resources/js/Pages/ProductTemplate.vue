@@ -15,11 +15,11 @@
             </v-card-title>
 
             <v-card-item class="mt-4">
-                <div style="display: flex; flex-direction: column">
-                    <span class="me-1" style="font-size: 20px">{{ product.availability }}</span>
+                <div style="display: flex; flex-direction: column; font-size: 20px">
+                    <span class="me-1">{{ product.availability }}</span>
                     <div class="mt-3">
                         <h2>Доставка:</h2>
-                        <span class="me-1" style="font-size: 20px">{{ product.delivery }}</span>
+                        <span class="me-1">{{ product.delivery }}</span>
                     </div>
                 </div>
             </v-card-item>
@@ -92,7 +92,7 @@ export default {
                 // Send the id to an Axios request to delete the desired post by id
                 await ApiStore.methods.deleteProduct(this.product.id);
             } catch (error) {
-                console.log(error)
+                alert(error)
             }
         }
     },

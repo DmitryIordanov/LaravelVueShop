@@ -9,10 +9,7 @@ import FormUpdateProduct from "@/Components/FormUpdateProduct.vue";
 
 export default {
     components: {FormUpdateProduct},
-
 }
 </script>
 
-<style>
-
-</style>
+<style></style>

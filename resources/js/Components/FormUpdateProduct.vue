@@ -63,7 +63,7 @@
                 <div>{{ random.randomString }}</div>
             </div>
             <v-text-field
-                style="width: 200px;"
+                style="width: 195px;"
                 label="Введите капчу"
                 :error-messages="v$.captcha.$errors.map(e => e.$message)"
                 v-model="state.captcha"
@@ -179,7 +179,7 @@ export default {
 }
 
 </script>
-<style>
+<style scoped>
 .ck-balloon-panel .ck-powered-by a {
     display: none !important;
 }

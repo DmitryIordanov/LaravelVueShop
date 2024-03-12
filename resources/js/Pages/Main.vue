@@ -49,7 +49,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 .block__btn_select {
     display: grid;
     grid-template-columns: repeat(3, 410px);

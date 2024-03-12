@@ -84,7 +84,7 @@ export default {
                         }
                     );
             } catch (error) {
-                console.log(error);
+                alert(error);
             } finally {
                 // isLoadingProduct set to false
                 this.isLoadingProduct = false;
